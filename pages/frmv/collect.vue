@@ -1,5 +1,14 @@
 <template>
 <view>
+	<view>
+		<u-navbar title-color="#fff" back-icon-color="#ffffff"
+			:is-fixed="isFixed" :is-back="isBack" 
+			:background="background" 
+			:back-text-style="{color: '#fff'}" :title="title1" 
+			:back-icon-name="backIconName" :back-text="backText"
+			:border-bottom="false" @click="goIndex()()">
+		</u-navbar>
+	</view>
 <view v-if="collected">
 	<u-table>
 			<u-tr>
@@ -92,8 +101,9 @@
 					@click="trafficback"></u-select>
 			</u-form-item>
 			<u-form-item label="兴趣">
-				<u-checkbox-group @change="checkboxGroupChange">
-					<u-checkbox @change="checkboxChange" v-for="(item, index) in interestslist" :key="index" :name="item.name"  v-model="item.checked">{{item.name}}</u-checkbox>
+				<u-checkbox-group class="checkbox" @change="checkboxGroupChange">
+					<u-checkbox class="checkbox" @change="checkboxChange" v-for="(item, index) in interestslist" 
+					:key="index" :name="item.name"  v-model="item.checked">{{item.name}}</u-checkbox>
 				</u-checkbox-group>
 			</u-form-item>		
 		</u-form>
@@ -108,6 +118,27 @@
 	export default {
 		data() {
 			return {
+				// 顶部导航栏
+				title1: '信息采集',
+				backText: '首页',
+				backIconName: 'nav-back',
+				right: false,
+				showAction: false,
+				rightSlot: false,
+				useSlot: false,
+				background: {
+					'background-image': 'linear-gradient(45deg, rgb(118, 187, 187), rgb(156, 198, 130))'
+				},
+				isBack: true,
+				search: false,
+				custom: true,
+				isFixed: true,
+				keyword: '',
+				// #ifdef MP
+				slotRight: false,
+				// #endif
+				// #ifndef MP
+				slotRight: true,
 				showform:{
 					name:'',
 					gender:'',
@@ -125,14 +156,18 @@
 				collected: false,
 			    nowtimer: "",
 				interests: {
-					'跳绳': false,
-					'游泳': false,
-					'美食': false,
-					'跑步': false,
-					'抖音': false,
-					'小红书': false,
-					'B站': false,
-					'旅游': false
+					'阅读': false,
+					'运动': false,
+					'音乐': false,
+					'舞蹈': false,
+					'艺术': false,
+					'游戏': false,
+					'旅游': false,
+					'学习': false,
+					'追剧': false,
+					'追星': false,
+					'原神': false,
+					'其他': false,
 				},
 				////////////////表单验证规则
 				rules: {
@@ -249,23 +284,23 @@
 					},
 					{
 						value: '2',
-						label: '高铁'
-					},
-					{
-						value: '3',
 						label: '飞机'
 					},
 					{
-						value: '4',
+						value: '3',
 						label: '自驾'
 					},
 					{
+						value: '4',
+						label: '打车'
+					},
+					{
 						value: '5',
-						label: '步行'
+						label: '公交地铁'
 					},
 					{
 						value: '6',
-						label: '游泳'
+						label: '步行'
 					}
 				],
 				actionSheetList: [
@@ -289,86 +324,140 @@
 							{
 								value: 2,
 								label: '物联网',
-							},
+							},					
 							{
 								value: 3,
-								label: '大数据',
-							},
-							{
-								value: 4,
-								label: '软件工程',
-							},
-							{
-								value: 5,
 								label: '计算机科学与技术',
 							},
 							{
-								value: 6,
+								value: 4,
 								label: '信息安全',
 							},
-							{
-								value: 7,
-								label: '人工智能',
-							}
 						]
 					},
 					{
-						value: 8,
-						label: '外国语学院',
-						children: [
-							{
-								value: 9,
-								label: '英语',
-							},
-							{
-								value: 10,
-								label: '德语',
-							},
-							{
-								value: 11,
-								label: '法语',
-							}
+					value: 5,
+					label: '软件学院',
+					children: [
+						{
+							value: 6,
+							label: '软件工程',
+						},
+						{
+							value: 7,
+							label: '数据科学与大数据技术',
+						},
+						{
+							value: 8,
+							label: '人工智能',
+						},
+					]
+					},
+					{
+					value: 9,
+					label: '微电子与通信学院',
+					children: [
+						{
+							value: 10,
+							label: '光电信息科学与工程',
+						},
+						{
+							value: 11,
+							label: '电子科学与技术',
+						},
+						{
+							value: 12,
+							label: '电子信息工程',
+						},
+						{
+							value: 13,
+							label: '集成电路设计与集成系统',
+						},
+						{
+							value: 14,
+							label: '通信工程',
+						}]
+					},
+					{
+					value: 15,
+					label: '电气工程及自动化学院',
+					children: [
+						{
+							value: 16,
+							label: '电气工程及其自动化',
+						},
 						]
-					}
+					},
+					{
+					value: 17,
+					label: '机械工程及自动化学院',
+					children: [
+						{
+							value: 18,
+							label: '机械设计制造及其自动化',
+						},
+						{
+							value: 19,
+							label: '机械电子工程',
+						},
+						{
+							value: 20,
+							label: '车辆工程',
+						},
+						{
+							value: 21,
+							label: '智能制造工程',
+						},]
+					},
 				],
 				////////////////
 				interestslist: [{
-						name: '跳绳',
+						name: '阅读',
 						checked: false,
 						disabled: false
 					},
 					{
-						name: '游泳',
+						name: '运动',
 						checked: false,
 						disabled: false
 					},
 					{
-						name: '美食',
+						name: '音乐',
 						checked: false,
 						disabled: false
 					},
 					{
-						name: '跑步',
+						name: '舞蹈',
 						checked: false,
 						disabled: false
 					},
 					{
-						name: '抖音',
+						name: '艺术',
 						checked: false,
 						disabled: false
 					},
 					{
-						name: '小红书',
-						checked: false,
-						disabled: false
-					},
-					{
-						name: 'B站',
+						name: '游戏',
 						checked: false,
 						disabled: false
 					},
 					{
 						name: '旅游',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '学习',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '追剧',
+						checked: false,
+						disabled: false
+					},
+					{
+						name: '原神',
 						checked: false,
 						disabled: false
 					}
@@ -513,5 +602,7 @@
 	};
 </script>
 <style lang="scss">
-
+	.checkbox {
+		icon-size: 100rpx;
+	}
 </style>

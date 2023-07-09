@@ -1,16 +1,16 @@
 <template>
-	<view class="wrap">
+	<view>
+		<image style="width: 430px; height: 350px; background-color: #eeeeee;" :src="picsrc">
         <u-form :model="user"   ref="uForm"  > 
 			<u-form-item   left-icon="account" label-width="120" label="电话" prop="phone">
-				<u-input  placeholder="请输入昵称" v-model="user.phone" type="text"></u-input>
+				<u-input  placeholder="请输入电话" v-model="user.phone" type="text"></u-input>
 			</u-form-item> 
 			<u-form-item   left-icon="lock" label-width="120"  label="密码" prop="password">
 				<u-input :password-icon="true"   type="password" v-model="user.password" placeholder="请输入密码"></u-input>
-			</u-form-item>  
-			 
+			</u-form-item>
 		</u-form> 
-		<u-button @click="submit">提交</u-button>	
-		<u-button @click="goRegiter">注册</u-button>	 
+		<u-button @click="submit" shape="circle">提交</u-button>
+		<u-button @click="goRegiter" shape="circle">注册</u-button>
 	</view>
 </template>
 
@@ -18,6 +18,7 @@
 	export default {
 		data() {
 			return {
+				picsrc:'../../static/images/cqulogo.png',
 				user: {
 					'phone': '',
 					'password': '' 
@@ -60,5 +61,9 @@
 <style>
 .u-demo-area{
 	cursor: pointer;
+}
+
+.test2 {
+	background-image: url('https://i.postimg.cc/h4rNfC2m/QQ-20230708115228.png');
 }
 </style>
